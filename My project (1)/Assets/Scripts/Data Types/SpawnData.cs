@@ -4,7 +4,7 @@ using UnityEngine;
 [System.Serializable]
 public struct SpawnGroup
 {
-    public WaypointFollower prefab; // enemy prefab
+    public WaypointFollower prefab;
     [Min(1)] public int count;
     [Min(0f)] public float startDelay;
     [Min(0f)] public float interval;
