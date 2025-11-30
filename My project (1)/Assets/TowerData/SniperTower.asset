@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f91dd729b19c9bb4cbb9b461506600fd, type: 3}
-  m_Name: BasicTower
+  m_Name: SniperTower
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
-  prefab: {fileID: 8929089757444001438, guid: 2a0e0a277626863438af6d4977a8c7a0, type: 3}
+  prefab: {fileID: 8409433305558687058, guid: f53bac730f555554c946ce0eb36c6a33, type: 3}
   footprintRadius: 0.5
-  displayName: Scout
+  displayName: Sniper
   icon: {fileID: 0}
-  cost: 10
-  damageMultiplierPerLevel: 1.5
-  attackSpeedMultiplierPerLevel: 1.25
-  rangeMultiplierPerLevel: 1.1
+  cost: 25
+  damageMultiplierPerLevel: 3
+  attackSpeedMultiplierPerLevel: 1.1
+  rangeMultiplierPerLevel: 2

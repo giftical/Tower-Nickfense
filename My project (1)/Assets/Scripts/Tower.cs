@@ -12,6 +12,34 @@ public class Tower : MonoBehaviour
     [SerializeField] Transform firePoint;
     [SerializeField] Projectile projectilePf;
 
+    [Header("Meta")]
+    [SerializeField] TowerData data;
+    [SerializeField] int level = 1;
+
+    public TowerData Data => data;
+    public int Level => level;
+
+    public void InitFromData(TowerData d)
+    {
+        data = d;
+        level = 1;
+    }
+
+    public bool TryUpgrade()
+    {
+        if (data == null) return false;
+
+        level++;
+
+        damage *= data.damageMultiplierPerLevel;
+        attackSpeed *= data.attackSpeedMultiplierPerLevel;
+        range *= data.rangeMultiplierPerLevel;
+
+        Debug.Log($"Tower {data.displayName} upgraded to level {level}");
+
+        return true;
+    }
+
     float cd;
 
     void Update()
@@ -33,12 +61,12 @@ public class Tower : MonoBehaviour
         float bestProg = -1f;
         float fallbackBestSqr = float.PositiveInfinity;
 
-        for (int i = 0; i < hits.Length; i++)
+        foreach (var h in hits)
         {
-            var dmg = hits[i].GetComponentInParent<IDamageable>() ?? hits[i].GetComponent<IDamageable>();
+            var dmg = h.GetComponentInParent<IDamageable>() ?? h.GetComponent<IDamageable>();
             if (dmg == null || dmg.IsDead) continue;
 
-            var prog = hits[i].GetComponentInParent<IPathProgress>() ?? hits[i].GetComponent<IPathProgress>();
+            var prog = h.GetComponentInParent<IPathProgress>() ?? h.GetComponent<IPathProgress>();
             if (prog != null)
             {
                 if (prog.Progress01 > bestProg) { bestProg = prog.Progress01; best = dmg; }

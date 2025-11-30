@@ -12,15 +12,20 @@ public class EnemyDamageAdapter : MonoBehaviour, IDamageable
     public void TakeDamage(float amount)
     {
         if (IsDead) return;
+
         stats.currentHealth -= (int)amount;
-        if (stats.currentHealth <= 0f) Die();
+
+        if (stats.currentHealth <= 0f)
+            Die();
     }
 
     public Transform GetTransform() => transform;
 
     void Die()
     {
-        // reward, VFX, etc.
+        if (EconomyManager.Instance != null)
+            EconomyManager.Instance.AddGold(stats.goldOnDeath);
+
         Destroy(gameObject);
     }
 }

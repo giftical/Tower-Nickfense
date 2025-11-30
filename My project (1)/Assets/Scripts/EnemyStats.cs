@@ -10,12 +10,11 @@ public class EnemyStats : MonoBehaviour
     [Min(1)] public int maxHealth = 10;
     public int currentHealth;
 
-    void Awake() => currentHealth = maxHealth;
+    [Header("Rewards")]
+    [Min(0)] public int goldOnDeath = 1;
 
-    public void TakeDamage(int amount)
+    void Awake()
     {
-        if (currentHealth <= 0) return;
-        currentHealth = Mathf.Max(0, currentHealth - amount);
-        if (currentHealth == 0) Destroy(gameObject);
+        currentHealth = maxHealth;
     }
 }

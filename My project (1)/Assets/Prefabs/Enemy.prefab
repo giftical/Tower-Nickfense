@@ -129,6 +129,7 @@ MonoBehaviour:
   moveSpeed: 2
   maxHealth: 10
   currentHealth: 10
+  goldOnDeath: 3
 --- !u!114 &1943307116412885973
 MonoBehaviour:
   m_ObjectHideFlags: 0
