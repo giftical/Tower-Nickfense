@@ -173,13 +173,20 @@ public class PlacementSystem : MonoBehaviour
         var go = Instantiate(current.prefab, pos, preview.transform.rotation);
         go.layer = LayerMask.NameToLayer("Tower");
 
-        foreach (var mb in go.GetComponentsInChildren<MonoBehaviour>())
-            mb.enabled = true;
+        // Keep scripts disabled until data is assigned
+        var mbs = go.GetComponentsInChildren<MonoBehaviour>();
+        foreach (var mb in mbs)
+            mb.enabled = false;
 
         var tower = go.GetComponentInChildren<Tower>();
         if (tower != null)
             tower.InitFromData(current);
+
+        // Now enable everything (SynergyAgent will register with correct data)
+        foreach (var mb in mbs)
+            mb.enabled = true;
     }
+
 
     // ---------------------------
     // Upgrading existing tower

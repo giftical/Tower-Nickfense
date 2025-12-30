@@ -15,8 +15,12 @@ MonoBehaviour:
   prefab: {fileID: 8409433305558687058, guid: f53bac730f555554c946ce0eb36c6a33, type: 3}
   footprintRadius: 0.5
   displayName: Sniper
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: bf0e6a473757bca4ea1e151d5ed1bedd, type: 3}
   cost: 25
+  typeId: sniper
+  traits:
+  - {fileID: 11400000, guid: f4c4a3928589e1c45af956b2f1feab6e, type: 2}
+  - {fileID: 11400000, guid: 419e78b79fecc2f4cbdc3e330e980dec, type: 2}
   damageMultiplierPerLevel: 3
   attackSpeedMultiplierPerLevel: 1.1
   rangeMultiplierPerLevel: 2

@@ -156,6 +156,7 @@ GameObject:
   - component: {fileID: 6649028090093344058}
   - component: {fileID: 6651256899923290781}
   - component: {fileID: 8169334467560879934}
+  - component: {fileID: 722609901107184858}
   m_Layer: 7
   m_Name: Sniper
   m_TagString: Untagged
@@ -276,3 +277,17 @@ MonoBehaviour:
     m_Bits: 8
   firePoint: {fileID: 4266079632916071991}
   projectilePf: {fileID: -3212539644412096000, guid: bfb3488235fbb084ebfcd33a96979c60, type: 3}
+  data: {fileID: 0}
+  level: 1
+--- !u!114 &722609901107184858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8409433305558687058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4643489e6c3213d4fa7f7cca5a4da796, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerSynergyAgent

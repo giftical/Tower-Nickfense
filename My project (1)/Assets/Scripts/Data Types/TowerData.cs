@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Towers/TowerData")]
@@ -11,6 +12,13 @@ public class TowerData : ScriptableObject
     public string displayName;
     public Sprite icon;
     public int cost = 10;
+
+    [Header("Unique tower type id (used for trait stacks)")]
+    [Tooltip("Must be unique per tower kind. Example: 'scout', 'sniper'. Two placed scouts count as ONE unique type.")]
+    public string typeId;
+
+    [Header("Traits (shared assets)")]
+    public List<TraitData> traits = new();
 
     [Header("Upgrade (simple multipliers)")]
     public float damageMultiplierPerLevel = 1.5f;

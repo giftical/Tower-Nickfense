@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
-    [Header("Stats")]
+    [Header("Stats (current runtime values)")]
     [SerializeField, Min(0.05f)] float attackSpeed = 1f;
     [SerializeField, Min(0f)] float damage = 2f;
     [SerializeField, Min(0.1f)] float range = 5f;
@@ -19,10 +19,42 @@ public class Tower : MonoBehaviour
     public TowerData Data => data;
     public int Level => level;
 
+    float baseAttackSpeed, baseDamage, baseRange;
+    bool baseCaptured;
+
+    float traitAttackSpeedMult = 1f;
+    float traitDamageMult = 1f;
+    float traitRangeMult = 1f;
+
+    float cd;
+
+    void Awake()
+    {
+        CaptureBaseIfNeeded();
+        RebuildStats();
+    }
+
+    void CaptureBaseIfNeeded()
+    {
+        if (baseCaptured) return;
+        baseCaptured = true;
+        baseAttackSpeed = attackSpeed;
+        baseDamage = damage;
+        baseRange = range;
+    }
+
     public void InitFromData(TowerData d)
     {
+        CaptureBaseIfNeeded();
+
         data = d;
         level = 1;
+
+        traitAttackSpeedMult = 1f;
+        traitDamageMult = 1f;
+        traitRangeMult = 1f;
+
+        RebuildStats();
     }
 
     public bool TryUpgrade()
@@ -30,17 +62,40 @@ public class Tower : MonoBehaviour
         if (data == null) return false;
 
         level++;
-
-        damage *= data.damageMultiplierPerLevel;
-        attackSpeed *= data.attackSpeedMultiplierPerLevel;
-        range *= data.rangeMultiplierPerLevel;
+        RebuildStats();
 
         Debug.Log($"Tower {data.displayName} upgraded to level {level}");
-
         return true;
     }
 
-    float cd;
+    public void SetTraitMultipliers(float atk, float dmg, float rng)
+    {
+        traitAttackSpeedMult = Mathf.Max(0.01f, atk);
+        traitDamageMult = Mathf.Max(0.01f, dmg);
+        traitRangeMult = Mathf.Max(0.01f, rng);
+
+        RebuildStats();
+    }
+
+    void RebuildStats()
+    {
+        int steps = Mathf.Max(0, level - 1);
+
+        float lvlAtkMult = 1f;
+        float lvlDmgMult = 1f;
+        float lvlRngMult = 1f;
+
+        if (data != null)
+        {
+            lvlAtkMult = Mathf.Pow(data.attackSpeedMultiplierPerLevel, steps);
+            lvlDmgMult = Mathf.Pow(data.damageMultiplierPerLevel, steps);
+            lvlRngMult = Mathf.Pow(data.rangeMultiplierPerLevel, steps);
+        }
+
+        attackSpeed = baseAttackSpeed * lvlAtkMult * traitAttackSpeedMult;
+        damage = baseDamage * lvlDmgMult * traitDamageMult;
+        range = baseRange * lvlRngMult * traitRangeMult;
+    }
 
     void Update()
     {
@@ -51,12 +106,14 @@ public class Tower : MonoBehaviour
         if (target == null) return;
 
         Shoot(target);
-        cd = 1f / attackSpeed;
+
+        cd = 1f / Mathf.Max(0.05f, attackSpeed);
     }
 
     IDamageable AcquireTarget()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, range, enemyMask);
+
         IDamageable best = null;
         float bestProg = -1f;
         float fallbackBestSqr = float.PositiveInfinity;
@@ -77,6 +134,7 @@ public class Tower : MonoBehaviour
                 if (d2 < fallbackBestSqr) { fallbackBestSqr = d2; best = dmg; }
             }
         }
+
         return best;
     }
 
@@ -85,11 +143,5 @@ public class Tower : MonoBehaviour
         if (!projectilePf || !firePoint) return;
         var p = Instantiate(projectilePf, firePoint.position, firePoint.rotation);
         p.Init(target, damage);
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, range);
     }
 }

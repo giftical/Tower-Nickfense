@@ -10,13 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f91dd729b19c9bb4cbb9b461506600fd, type: 3}
-  m_Name: BasicTower
+  m_Name: ScoutTower
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
   prefab: {fileID: 8929089757444001438, guid: 2a0e0a277626863438af6d4977a8c7a0, type: 3}
   footprintRadius: 0.5
   displayName: Scout
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: c87ad9eaa6820434899a8f9b901cd2d9, type: 3}
   cost: 10
+  typeId: scout
+  traits:
+  - {fileID: 11400000, guid: f4c4a3928589e1c45af956b2f1feab6e, type: 2}
+  - {fileID: 11400000, guid: b6a6ef6b217292844ad0117a0b7d37aa, type: 2}
   damageMultiplierPerLevel: 1.5
   attackSpeedMultiplierPerLevel: 1.25
   rangeMultiplierPerLevel: 1.1
