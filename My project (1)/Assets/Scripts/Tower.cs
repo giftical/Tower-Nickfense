@@ -12,6 +12,9 @@ public class Tower : MonoBehaviour
     [SerializeField] Transform firePoint;
     [SerializeField] Projectile projectilePf;
 
+    [Header("Muzzle Visual (optional)")]
+    [SerializeField] Transform muzzleModel; // assign a pivot with (1,1,1) scale if possible
+
     [Header("Meta")]
     [SerializeField] TowerData data;
     [SerializeField] int level = 1;
@@ -19,9 +22,13 @@ public class Tower : MonoBehaviour
     public TowerData Data => data;
     public int Level => level;
 
-    float baseAttackSpeed, baseDamage, baseRange;
+    // --- base stats (captured once) ---
+    float baseAttackSpeed;
+    float baseDamage;
+    float baseRange;
     bool baseCaptured;
 
+    // --- trait multipliers (set by SynergyManager) ---
     float traitAttackSpeedMult = 1f;
     float traitDamageMult = 1f;
     float traitRangeMult = 1f;
@@ -38,6 +45,7 @@ public class Tower : MonoBehaviour
     {
         if (baseCaptured) return;
         baseCaptured = true;
+
         baseAttackSpeed = attackSpeed;
         baseDamage = damage;
         baseRange = range;
@@ -106,7 +114,6 @@ public class Tower : MonoBehaviour
         if (target == null) return;
 
         Shoot(target);
-
         cd = 1f / Mathf.Max(0.05f, attackSpeed);
     }
 
@@ -141,7 +148,42 @@ public class Tower : MonoBehaviour
     void Shoot(IDamageable target)
     {
         if (!projectilePf || !firePoint) return;
+
+        AimMuzzleOnShot(target);
+
         var p = Instantiate(projectilePf, firePoint.position, firePoint.rotation);
         p.Init(target, damage);
+    }
+
+    // Rotates muzzle ONLY when shooting, and keeps that rotation until the next shot.
+    void AimMuzzleOnShot(IDamageable target)
+    {
+        if (muzzleModel == null || target == null) return;
+
+        Vector3 worldDir = target.GetTransform().position - muzzleModel.position;
+        if (worldDir.sqrMagnitude < 0.0001f) return;
+
+        // Aim using local space to avoid world/local mixing issues.
+        Transform parent = muzzleModel.parent;
+        Vector3 localDir = parent ? parent.InverseTransformDirection(worldDir) : worldDir;
+
+        // Yaw-only (horizontal rotation only) so long weapons don't tilt up/down.
+        localDir.y = 0f;
+        if (localDir.sqrMagnitude < 0.0001f) return;
+
+        Quaternion localLook = Quaternion.LookRotation(localDir.normalized, Vector3.up);
+
+        // FIX: model axis correction (sideways/backwards).
+        // This is the common fix when the barrel is authored along +X instead of +Z.
+        // If it ends up sideways again, swap 90f to 270f.
+        localLook *= Quaternion.Euler(0f, 90f, 0f);
+
+        muzzleModel.localRotation = localLook;
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, range);
     }
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f91dd729b19c9bb4cbb9b461506600fd, type: 3}
   m_Name: ScoutTower
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
-  prefab: {fileID: 8929089757444001438, guid: 2a0e0a277626863438af6d4977a8c7a0, type: 3}
+  prefab: {fileID: 2451949859034526368, guid: afa429f5b0978d24ca6826b984a4bbee, type: 3}
   footprintRadius: 0.5
   displayName: Scout
   icon: {fileID: 21300000, guid: c87ad9eaa6820434899a8f9b901cd2d9, type: 3}

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f91dd729b19c9bb4cbb9b461506600fd, type: 3}
   m_Name: SniperTower
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
-  prefab: {fileID: 8409433305558687058, guid: f53bac730f555554c946ce0eb36c6a33, type: 3}
+  prefab: {fileID: 3824216758152523117, guid: 38670f661c48c22428327b322d7a086a, type: 3}
   footprintRadius: 0.5
   displayName: Sniper
   icon: {fileID: 21300000, guid: bf0e6a473757bca4ea1e151d5ed1bedd, type: 3}
