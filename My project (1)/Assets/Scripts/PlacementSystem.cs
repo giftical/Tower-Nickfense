@@ -12,9 +12,13 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField] bool snapToGrid = true;
     [SerializeField] float cellSize = 1f;
 
-    [Header("Preview")]
-    [SerializeField] Material okMat;
-    [SerializeField] Material badMat;
+    [Header("Preview Materials")]
+    [SerializeField] Material okMat;       // green
+    [SerializeField] Material badMat;      // red
+    [SerializeField] Material upgradeMat;  // yellow
+
+    [Header("Upgrade Input")]
+    [SerializeField] KeyCode upgradeKey = KeyCode.E;
 
     Camera cam;
 
@@ -22,6 +26,13 @@ public class PlacementSystem : MonoBehaviour
     Renderer[] previewRenderers;
 
     TowerData current;   // tower being placed
+
+    enum PlacementState
+    {
+        Invalid,
+        PlaceValid,
+        UpgradeValid
+    }
 
     void Start()
     {
@@ -36,46 +47,85 @@ public class PlacementSystem : MonoBehaviour
         if (BuildManager.Instance == null)
             return;
 
-        // Sync with BuildManager's selected tower
+
         var sel = BuildManager.Instance.Current;
         if (sel != current)
             SpawnOrSwapPreview(sel);
 
-        // Only run placement when we actually bought a tower
+        // only run placement when tower actually bought
         if (!BuildManager.Instance.HasPendingPurchase || !current)
             return;
 
-        // Position preview on the ground
-        if (TryGetPlacementPoint(out var pos))
+        bool holdingUpgrade = Input.GetKey(upgradeKey);
+
+        Tower upgradeTarget = null;
+        bool canUpgrade = false;
+
+        if (holdingUpgrade && TryGetUpgradeTarget(out upgradeTarget))
         {
-            if (snapToGrid)
-                pos = Snap(pos);
-
-            if (preview != null)
-                preview.transform.position = pos;
-
-            bool canPlace = CanPlaceAt(pos, current.footprintRadius);
-            SetPreviewOK(canPlace);
-
-            // LEFT CLICK
-            if (Input.GetMouseButtonDown(0))
+            if (upgradeTarget != null && upgradeTarget.Data == current)
             {
-                // (1) Upgrade if clicking on an identical existing tower
-                if (TryUpgradeAtMouse())
-                {
-                    BuildManager.Instance.OnPurchaseConsumed();
-                    ClearPreview();
-                    return;
-                }
+                canUpgrade = true;
 
-                // (2) Place if valid tile
-                if (canPlace)
+                var pos = upgradeTarget.transform.position;
+                if (preview != null)
+                    preview.transform.position = pos;
+
+                SetPreviewState(PlacementState.UpgradeValid);
+            }
+            else
+            {
+                if (upgradeTarget != null && preview != null)
+                    preview.transform.position = upgradeTarget.transform.position;
+
+                SetPreviewState(PlacementState.Invalid);
+            }
+        }
+
+        bool canPlace = false;
+        Vector3 placePos = default;
+
+        if (!canUpgrade)
+        {
+            if (TryGetPlacementPoint(out var pos))
+            {
+                if (snapToGrid)
+                    pos = Snap(pos);
+
+                placePos = pos;
+
+                if (preview != null)
+                    preview.transform.position = pos;
+
+                canPlace = CanPlaceAt(pos, current.footprintRadius);
+                SetPreviewState(canPlace ? PlacementState.PlaceValid : PlacementState.Invalid);
+            }
+            else
+            {
+                SetPreviewState(PlacementState.Invalid);
+            }
+        }
+
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (canUpgrade && upgradeTarget != null)
+            {
+                if (upgradeTarget.TryUpgrade())
                 {
-                    Place(pos);
                     BuildManager.Instance.OnPurchaseConsumed();
                     ClearPreview();
                     return;
                 }
+            }
+
+            // Otherwise normal placement
+            if (!canUpgrade && canPlace)
+            {
+                Place(placePos);
+                BuildManager.Instance.OnPurchaseConsumed();
+                ClearPreview();
+                return;
             }
         }
 
@@ -87,13 +137,8 @@ public class PlacementSystem : MonoBehaviour
         }
     }
 
-    // ---------------------------
-    // Preview logic
-    // ---------------------------
-
     void SpawnOrSwapPreview(TowerData sel)
     {
-        // Remove previous visual only (do NOT wipe current!)
         ClearPreview();
 
         current = sel;
@@ -103,7 +148,6 @@ public class PlacementSystem : MonoBehaviour
 
         preview = Instantiate(current.prefab);
 
-        // Disable tower behaviour in preview
         foreach (var mb in preview.GetComponentsInChildren<MonoBehaviour>())
             mb.enabled = false;
 
@@ -111,7 +155,7 @@ public class PlacementSystem : MonoBehaviour
             col.enabled = false;
 
         previewRenderers = preview.GetComponentsInChildren<Renderer>();
-        SetPreviewOK(false);
+        SetPreviewState(PlacementState.Invalid);
     }
 
     void ClearPreview()
@@ -121,12 +165,31 @@ public class PlacementSystem : MonoBehaviour
 
         preview = null;
         previewRenderers = null;
-        // IMPORTANT: we do NOT set current = null here
     }
 
-    // ---------------------------
-    // Placement helpers
-    // ---------------------------
+    void SetPreviewState(PlacementState state)
+    {
+        if (previewRenderers == null) return;
+
+        Material mat = badMat;
+
+        switch (state)
+        {
+            case PlacementState.PlaceValid:
+                mat = okMat;
+                break;
+            case PlacementState.UpgradeValid:
+                mat = upgradeMat != null ? upgradeMat : okMat; // fallback if not assigned
+                break;
+            default:
+                mat = badMat;
+                break;
+        }
+
+        foreach (var r in previewRenderers)
+            r.material = mat;
+
+    }
 
     bool TryGetPlacementPoint(out Vector3 point)
     {
@@ -150,15 +213,6 @@ public class PlacementSystem : MonoBehaviour
     bool CanPlaceAt(Vector3 pos, float radius)
     {
         return !Physics.CheckSphere(pos, radius, blockedMask, QueryTriggerInteraction.Collide);
-    }
-
-    void SetPreviewOK(bool ok)
-    {
-        if (previewRenderers == null) return;
-
-        var mat = ok ? okMat : badMat;
-        foreach (var r in previewRenderers)
-            r.sharedMaterial = mat;
     }
 
     // ---------------------------
@@ -187,25 +241,20 @@ public class PlacementSystem : MonoBehaviour
             mb.enabled = true;
     }
 
-
     // ---------------------------
     // Upgrading existing tower
     // ---------------------------
 
-    bool TryUpgradeAtMouse()
+    bool TryGetUpgradeTarget(out Tower tower)
     {
+        tower = null;
+
         Ray r = cam.ScreenPointToRay(Input.mousePosition);
 
         if (!Physics.Raycast(r, out var hit, 1000f, towerMask))
             return false;
 
-        var tower = hit.collider.GetComponentInParent<Tower>();
-        if (tower == null)
-            return false;
-
-        if (tower.Data != current)
-            return false;
-
-        return tower.TryUpgrade();
+        tower = hit.collider.GetComponentInParent<Tower>();
+        return tower != null;
     }
 }

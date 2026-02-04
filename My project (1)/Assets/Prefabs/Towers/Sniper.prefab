@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7946960338470947703}
   - component: {fileID: 2320374730876936673}
   - component: {fileID: 1443158282865197246}
+  - component: {fileID: 6296243884348377226}
   m_Layer: 7
   m_Name: Sniper
   m_TagString: Untagged
@@ -92,6 +93,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 9.800469, y: 14.11901, z: 9.589636}
   m_Center: {x: 0.30234256, y: 6.5595045, z: 0.24743855}
+--- !u!114 &6296243884348377226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3824216758152523117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 418c5fcd38057e24780932db55aa7781, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerHighlighter
+  highlightColor: {r: 1, g: 0, b: 0.9830489, a: 1}
 --- !u!1 &3868730664876825372
 GameObject:
   m_ObjectHideFlags: 0

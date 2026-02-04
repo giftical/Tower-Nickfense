@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 8476529664286541471}
   - component: {fileID: 7044685622869066150}
   - component: {fileID: 3907850828291375275}
+  - component: {fileID: -2762895518264502173}
   m_Layer: 7
   m_Name: scout 1
   m_TagString: Untagged
@@ -212,6 +213,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 6.7380195, y: 14.9233465, z: 6.5865297}
   m_Center: {x: -0.03063424, y: 6.961675, z: 0.074232854}
+--- !u!114 &-2762895518264502173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2451949859034526368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 418c5fcd38057e24780932db55aa7781, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerHighlighter
+  highlightColor: {r: 0.9788537, g: 0, b: 1, a: 1}
 --- !u!1 &7754586622896100581
 GameObject:
   m_ObjectHideFlags: 0

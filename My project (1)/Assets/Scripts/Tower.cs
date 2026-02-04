@@ -19,16 +19,20 @@ public class Tower : MonoBehaviour
     [SerializeField] TowerData data;
     [SerializeField] int level = 1;
 
+    // ---------- Public read-only access (for UI) ----------
     public TowerData Data => data;
     public int Level => level;
+    public float AttackSpeed => attackSpeed;
+    public float Damage => damage;
+    public float Range => range;
 
-    // --- base stats (captured once) ---
+    // ---------- Base stats (captured once) ----------
     float baseAttackSpeed;
     float baseDamage;
     float baseRange;
     bool baseCaptured;
 
-    // --- trait multipliers (set by SynergyManager) ---
+    // ---------- Trait multipliers (set by SynergyManager) ----------
     float traitAttackSpeedMult = 1f;
     float traitDamageMult = 1f;
     float traitRangeMult = 1f;
@@ -133,12 +137,20 @@ public class Tower : MonoBehaviour
             var prog = h.GetComponentInParent<IPathProgress>() ?? h.GetComponent<IPathProgress>();
             if (prog != null)
             {
-                if (prog.Progress01 > bestProg) { bestProg = prog.Progress01; best = dmg; }
+                if (prog.Progress01 > bestProg)
+                {
+                    bestProg = prog.Progress01;
+                    best = dmg;
+                }
             }
             else if (bestProg < 0f)
             {
                 float d2 = (dmg.GetTransform().position - transform.position).sqrMagnitude;
-                if (d2 < fallbackBestSqr) { fallbackBestSqr = d2; best = dmg; }
+                if (d2 < fallbackBestSqr)
+                {
+                    fallbackBestSqr = d2;
+                    best = dmg;
+                }
             }
         }
 
@@ -155,7 +167,7 @@ public class Tower : MonoBehaviour
         p.Init(target, damage);
     }
 
-    // Rotates muzzle ONLY when shooting, and keeps that rotation until the next shot.
+    // Rotates muzzle ONLY when shooting, keeps rotation until next shot
     void AimMuzzleOnShot(IDamageable target)
     {
         if (muzzleModel == null || target == null) return;
@@ -163,19 +175,16 @@ public class Tower : MonoBehaviour
         Vector3 worldDir = target.GetTransform().position - muzzleModel.position;
         if (worldDir.sqrMagnitude < 0.0001f) return;
 
-        // Aim using local space to avoid world/local mixing issues.
         Transform parent = muzzleModel.parent;
         Vector3 localDir = parent ? parent.InverseTransformDirection(worldDir) : worldDir;
 
-        // Yaw-only (horizontal rotation only) so long weapons don't tilt up/down.
+        // Yaw only
         localDir.y = 0f;
         if (localDir.sqrMagnitude < 0.0001f) return;
 
         Quaternion localLook = Quaternion.LookRotation(localDir.normalized, Vector3.up);
 
-        // FIX: model axis correction (sideways/backwards).
-        // This is the common fix when the barrel is authored along +X instead of +Z.
-        // If it ends up sideways again, swap 90f to 270f.
+        // Model axis correction (+X forward)
         localLook *= Quaternion.Euler(0f, 90f, 0f);
 
         muzzleModel.localRotation = localLook;

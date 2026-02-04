@@ -13,6 +13,9 @@ public class EnemyStats : MonoBehaviour
     [Header("Rewards")]
     [Min(0)] public int goldOnDeath = 1;
 
+    [Header("UI")]
+    public string displayName = "Enemy";
+
     void Awake()
     {
         currentHealth = maxHealth;
