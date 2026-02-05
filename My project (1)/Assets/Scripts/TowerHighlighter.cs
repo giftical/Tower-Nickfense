@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TowerHighlighter : MonoBehaviour
 {
-    [SerializeField] Color highlightColor = Color.blue;
+    [SerializeField] Color highlightColor = Color.yellow;
 
     Renderer[] renderers;
     MaterialPropertyBlock mpb;
@@ -31,7 +31,6 @@ public class TowerHighlighter : MonoBehaviour
             }
             else
             {
-                // Clear per-renderer overrides
                 mpb.Clear();
                 r.SetPropertyBlock(mpb);
             }

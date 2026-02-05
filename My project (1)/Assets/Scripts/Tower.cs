@@ -1,3 +1,4 @@
+// Tower.cs (FULL) — includes public getters for UI, no registry.
 using UnityEngine;
 
 public class Tower : MonoBehaviour
@@ -13,26 +14,25 @@ public class Tower : MonoBehaviour
     [SerializeField] Projectile projectilePf;
 
     [Header("Muzzle Visual (optional)")]
-    [SerializeField] Transform muzzleModel; // assign a pivot with (1,1,1) scale if possible
+    [SerializeField] Transform muzzleModel;
 
     [Header("Meta")]
     [SerializeField] TowerData data;
     [SerializeField] int level = 1;
 
-    // ---------- Public read-only access (for UI) ----------
     public TowerData Data => data;
     public int Level => level;
+
+    // UI-readonly runtime stats
     public float AttackSpeed => attackSpeed;
     public float Damage => damage;
     public float Range => range;
 
-    // ---------- Base stats (captured once) ----------
     float baseAttackSpeed;
     float baseDamage;
     float baseRange;
     bool baseCaptured;
 
-    // ---------- Trait multipliers (set by SynergyManager) ----------
     float traitAttackSpeedMult = 1f;
     float traitDamageMult = 1f;
     float traitRangeMult = 1f;
@@ -137,20 +137,12 @@ public class Tower : MonoBehaviour
             var prog = h.GetComponentInParent<IPathProgress>() ?? h.GetComponent<IPathProgress>();
             if (prog != null)
             {
-                if (prog.Progress01 > bestProg)
-                {
-                    bestProg = prog.Progress01;
-                    best = dmg;
-                }
+                if (prog.Progress01 > bestProg) { bestProg = prog.Progress01; best = dmg; }
             }
             else if (bestProg < 0f)
             {
                 float d2 = (dmg.GetTransform().position - transform.position).sqrMagnitude;
-                if (d2 < fallbackBestSqr)
-                {
-                    fallbackBestSqr = d2;
-                    best = dmg;
-                }
+                if (d2 < fallbackBestSqr) { fallbackBestSqr = d2; best = dmg; }
             }
         }
 
@@ -167,7 +159,6 @@ public class Tower : MonoBehaviour
         p.Init(target, damage);
     }
 
-    // Rotates muzzle ONLY when shooting, keeps rotation until next shot
     void AimMuzzleOnShot(IDamageable target)
     {
         if (muzzleModel == null || target == null) return;
@@ -178,13 +169,10 @@ public class Tower : MonoBehaviour
         Transform parent = muzzleModel.parent;
         Vector3 localDir = parent ? parent.InverseTransformDirection(worldDir) : worldDir;
 
-        // Yaw only
         localDir.y = 0f;
         if (localDir.sqrMagnitude < 0.0001f) return;
 
         Quaternion localLook = Quaternion.LookRotation(localDir.normalized, Vector3.up);
-
-        // Model axis correction (+X forward)
         localLook *= Quaternion.Euler(0f, 90f, 0f);
 
         muzzleModel.localRotation = localLook;

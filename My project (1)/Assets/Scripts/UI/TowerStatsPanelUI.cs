@@ -1,8 +1,12 @@
+// TowerStatsPanelUI.cs (FULL, CanvasGroup version) — unchanged, included for completeness.
+// Keep your existing working version if you already have it.
 using TMPro;
 using UnityEngine;
 
 public class TowerStatsPanelUI : MonoBehaviour
 {
+    [SerializeField] CanvasGroup canvasGroup;
+
     [SerializeField] TMP_Text nameText;
     [SerializeField] TMP_Text levelText;
     [SerializeField] TMP_Text dmgText;
@@ -13,32 +17,35 @@ public class TowerStatsPanelUI : MonoBehaviour
 
     void Awake()
     {
+        if (canvasGroup == null)
+            canvasGroup = GetComponent<CanvasGroup>();
+
         Hide();
     }
 
     public void Show(Tower t)
     {
         current = t;
-        gameObject.SetActive(true);
+        transform.SetAsLastSibling();
+        SetVisible(true);
         Refresh();
     }
 
     public void Hide()
     {
         current = null;
-        gameObject.SetActive(false);
+        SetVisible(false);
     }
 
     void Update()
     {
-        // Live update while selected (upgrades/traits)
         if (current != null)
             Refresh();
     }
 
     void Refresh()
     {
-        if (current == null) { Hide(); return; }
+        if (current == null) return;
 
         string n = (current.Data != null) ? current.Data.displayName : current.gameObject.name;
 
@@ -47,5 +54,18 @@ public class TowerStatsPanelUI : MonoBehaviour
         dmgText.text = $"Damage: {current.Damage:0.##}";
         atkSpdText.text = $"Attack Speed: {current.AttackSpeed:0.##}";
         rangeText.text = $"Range: {current.Range:0.##}";
+    }
+
+    void SetVisible(bool on)
+    {
+        if (canvasGroup == null)
+        {
+            Debug.LogError("[TowerStatsPanelUI] Missing CanvasGroup on stats panel root.");
+            return;
+        }
+
+        canvasGroup.alpha = on ? 1f : 0f;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
     }
 }
