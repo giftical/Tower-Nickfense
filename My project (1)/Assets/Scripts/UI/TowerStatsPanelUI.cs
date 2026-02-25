@@ -50,10 +50,10 @@ public class TowerStatsPanelUI : MonoBehaviour
         string n = (current.Data != null) ? current.Data.displayName : current.gameObject.name;
 
         nameText.text = n;
-        levelText.text = $"Level: {current.Level}";
-        dmgText.text = $"Damage: {current.Damage:0.##}";
-        atkSpdText.text = $"Attack Speed: {current.AttackSpeed:0.##}";
-        rangeText.text = $"Range: {current.Range:0.##}";
+        levelText.text = $"Lv. {current.Level}";
+        dmgText.text = $"{current.Damage:0.##}";
+        atkSpdText.text = $"{current.AttackSpeed:0.##}";
+        rangeText.text = $"{current.Range:0.##}";
     }
 
     void SetVisible(bool on)
