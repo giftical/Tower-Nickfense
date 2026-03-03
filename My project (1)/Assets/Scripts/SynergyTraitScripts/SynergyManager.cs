@@ -1,4 +1,5 @@
 // SynergyManager.cs
+using System; // ADD
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -7,9 +8,9 @@ public class SynergyManager : MonoBehaviour
 {
     public static SynergyManager Instance { get; private set; }
 
-    readonly List<TowerSynergyAgent> towers = new();
+    public event Action OnSynergyChanged; // ADD
 
-    // For each trait, the set of unique tower typeIds currently present
+    readonly List<TowerSynergyAgent> towers = new();
     readonly Dictionary<TraitData, HashSet<string>> traitToTypes = new();
 
 #if UNITY_EDITOR
@@ -37,8 +38,19 @@ public class SynergyManager : MonoBehaviour
         RecalculateAndApply();
     }
 
-    // Called by TowerSynergyAgent when a tower changes its data/traits.
     public void RecalculateAndApplyPublic() => RecalculateAndApply();
+
+    public Dictionary<TraitData, int> GetTraitCounts()
+    {
+        // NOTE: no forced recalc here; we rely on Register/Unregister/RecalculateAndApplyPublic
+        var result = new Dictionary<TraitData, int>(traitToTypes.Count);
+        foreach (var kv in traitToTypes)
+        {
+            if (kv.Key == null) continue;
+            result[kv.Key] = kv.Value != null ? kv.Value.Count : 0;
+        }
+        return result;
+    }
 
     void RecalculateAndApply()
     {
@@ -65,7 +77,7 @@ public class SynergyManager : MonoBehaviour
                     traitToTypes[trait] = set;
                 }
 
-                set.Add(typeId); // unique type counting
+                set.Add(typeId);
             }
         }
 
@@ -103,5 +115,7 @@ public class SynergyManager : MonoBehaviour
             sb.AppendLine($"{(kv.Key ? kv.Key.displayName : "<null trait>")}: {kv.Value.Count} unique types");
         debugState = sb.ToString();
 #endif
+
+        OnSynergyChanged?.Invoke(); // ADD (at the very end)
     }
 }

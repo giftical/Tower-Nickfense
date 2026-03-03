@@ -1,21 +1,51 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenuController : MonoBehaviour
 {
     [Header("Panels")]
-    [SerializeField] private GameObject mainPanel;           // stays visible
-    [SerializeField] private GameObject difficultyPanel;     // overlay popup
-    [SerializeField] private GameObject settingsPanel;       // overlay popup
-    [SerializeField] private GameObject encyclopediaPanel;   // overlay popup
+    [SerializeField] private GameObject mainPanel;
+    [SerializeField] private GameObject difficultyPanel;
+    [SerializeField] private GameObject settingsPanel;
+    [SerializeField] private GameObject encyclopediaPanel;
 
     [Header("Gameplay Scene")]
     [SerializeField] private string gameplaySceneName = "Game";
+
+    [Header("Audio Settings")]
+    [SerializeField] private Slider volumeSlider;
+
+    private const string PrefMusicVol = "music_volume";
 
     private void Start()
     {
         if (mainPanel) mainPanel.SetActive(true);
         CloseAllPopups();
+    }
+
+    private void OnEnable()
+    {
+        if (volumeSlider != null)
+        {
+            // Load saved value when menu opens
+            float saved = PlayerPrefs.GetFloat(PrefMusicVol, 1f);
+            volumeSlider.SetValueWithoutNotify(saved);
+            volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (volumeSlider != null)
+            volumeSlider.onValueChanged.RemoveListener(OnVolumeChanged);
+    }
+
+    private void OnVolumeChanged(float value)
+    {
+        value = Mathf.Clamp01(value);
+        PlayerPrefs.SetFloat(PrefMusicVol, value);
+        PlayerPrefs.Save();
     }
 
     private void CloseAllPopups()
@@ -25,7 +55,6 @@ public class MainMenuController : MonoBehaviour
         if (encyclopediaPanel) encyclopediaPanel.SetActive(false);
     }
 
-    // Main buttons
     public void OnPlayPressed()
     {
         CloseAllPopups();
@@ -44,7 +73,6 @@ public class MainMenuController : MonoBehaviour
         if (encyclopediaPanel) encyclopediaPanel.SetActive(true);
     }
 
-    // Popup close button(s)
     public void OnClosePopupPressed()
     {
         CloseAllPopups();

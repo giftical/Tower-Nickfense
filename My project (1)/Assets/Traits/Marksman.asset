@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cd2634997c0fce4abec229659a90fcb, type: 3}
   m_Name: Marksman
   m_EditorClassIdentifier: Assembly-CSharp::TraitData
-  displayName: Mercenary
+  displayName: Marksman
   requiredUniqueTypes: 2
   attackSpeedBonus: 0
   damageBonus: 0

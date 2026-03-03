@@ -2256,6 +2256,7 @@ MonoBehaviour:
   settingsPanel: {fileID: 646223922}
   encyclopediaPanel: {fileID: 1367054118}
   gameplaySceneName: GameScene
+  volumeSlider: {fileID: 1314805930}
 --- !u!4 &1021022097
 Transform:
   m_ObjectHideFlags: 0
@@ -3511,7 +3512,7 @@ MonoBehaviour:
   m_FillRect: {fileID: 0}
   m_HandleRect: {fileID: 227388136}
   m_Direction: 0
-  m_MinValue: 0.0001
+  m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
   m_Value: 0.5
