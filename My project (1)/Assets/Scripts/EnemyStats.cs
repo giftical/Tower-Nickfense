@@ -16,8 +16,22 @@ public class EnemyStats : MonoBehaviour
     [Header("UI")]
     public string displayName = "Enemy";
 
+    float moveSpeedMultiplier = 1f;
+
+    public float CurrentMoveSpeed => moveSpeed * moveSpeedMultiplier;
+
     void Awake()
     {
         currentHealth = maxHealth;
+    }
+
+    public void SetMoveSpeedMultiplier(float multiplier)
+    {
+        moveSpeedMultiplier = Mathf.Max(0.01f, multiplier);
+    }
+
+    public void ResetMoveSpeedMultiplier()
+    {
+        moveSpeedMultiplier = 1f;
     }
 }

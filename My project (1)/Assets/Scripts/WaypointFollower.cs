@@ -42,7 +42,7 @@ public class WaypointFollower : MonoBehaviour, IPathProgress
         Vector3 target = waypoints[index].position;
         Vector3 dir = target - transform.position;
 
-        float step = stats.moveSpeed * Time.deltaTime;
+        float step = stats.CurrentMoveSpeed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, target, step);
 
         if (dir.sqrMagnitude > 0.0001f)

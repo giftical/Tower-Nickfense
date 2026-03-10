@@ -1,7 +1,8 @@
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class Projectile : ProjectileBase
 {
+    [Header("Movement")]
     [SerializeField] float speed = 12f;
     [SerializeField] float maxLifetime = 4f;
 
@@ -9,16 +10,20 @@ public class Projectile : MonoBehaviour
     [SerializeField] Transform visual;
     [SerializeField] Vector3 visualEulerOffset = new Vector3(-90f, 0f, 0f);
 
+    [Header("Optional slow effect")]
+    [SerializeField] bool applySlow = false;
+    [SerializeField, Range(0f, 1f)] float slowPercent = 0.2f;
+    [SerializeField, Min(0.01f)] float slowDuration = 2f;
+
     IDamageable target;
     float damage;
     float life;
 
-    public void Init(IDamageable target, float damage)
+    public override void Init(IDamageable target, float damage)
     {
         this.target = target;
         this.damage = damage;
 
-        // FIX: set correct rotation immediately on spawn (prevents 1-frame "wrong" orientation)
         if (this.target != null && !this.target.IsDead)
         {
             Vector3 dir = this.target.GetTransform().position - transform.position;
@@ -26,7 +31,6 @@ public class Projectile : MonoBehaviour
             {
                 transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
 
-                // keep the model aligned right away too
                 if (visual != null)
                     visual.localRotation = Quaternion.Euler(visualEulerOffset);
             }
@@ -38,7 +42,6 @@ public class Projectile : MonoBehaviour
         if (visual == null)
             visual = transform.childCount > 0 ? transform.GetChild(0) : null;
 
-        // FIX: ensure visual offset is applied even before first Update
         if (visual != null)
             visual.localRotation = Quaternion.Euler(visualEulerOffset);
     }
@@ -46,23 +49,35 @@ public class Projectile : MonoBehaviour
     void Update()
     {
         life += Time.deltaTime;
-        if (life >= maxLifetime) { Destroy(gameObject); return; }
-        if (target == null || target.IsDead) { Destroy(gameObject); return; }
+        if (life >= maxLifetime)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        if (target == null || target.IsDead)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
         Vector3 tp = target.GetTransform().position;
         Vector3 dir = tp - transform.position;
         float step = speed * Time.deltaTime;
 
-        if (dir.sqrMagnitude <= step * step) { Hit(); return; }
+        if (dir.sqrMagnitude <= step * step)
+        {
+            transform.position = tp;
+            Hit();
+            return;
+        }
 
         transform.position += dir.normalized * step;
 
         if (dir.sqrMagnitude > 0.000001f)
         {
-            // Face movement direction
             transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
 
-            // Keep the mesh aligned to forward
             if (visual != null)
                 visual.localRotation = Quaternion.Euler(visualEulerOffset);
         }
@@ -70,6 +85,25 @@ public class Projectile : MonoBehaviour
 
     void Hit()
     {
+        if (target == null || target.IsDead)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        if (applySlow)
+        {
+            var status = target.GetTransform().GetComponentInParent<EnemyStatusEffects>();
+            if (status == null)
+                status = target.GetTransform().GetComponent<EnemyStatusEffects>();
+
+            if (status != null)
+            {
+                float speedMultiplier = 1f - slowPercent;
+                status.ApplyMoveSlow(speedMultiplier, slowDuration);
+            }
+        }
+
         target.TakeDamage(damage);
         Destroy(gameObject);
     }

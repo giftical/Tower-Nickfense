@@ -49,6 +49,9 @@ MonoBehaviour:
   maxLifetime: 10
   visual: {fileID: 4478839222431224481}
   visualEulerOffset: {x: 0, y: 90, z: 0}
+  applySlow: 0
+  slowPercent: 0.2
+  slowDuration: 2
 --- !u!1001 &8178181069313886489
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -109,6 +112,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 92.03
       objectReference: {fileID: 0}
+    - target: {fileID: 6528632630842089273, guid: 7d029829f64180b40a03e6e8b62c2f50, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 35e958f258a299c4ea90fa81500f2507, type: 2}
     - target: {fileID: 7710731858483988796, guid: 7d029829f64180b40a03e6e8b62c2f50, type: 3}
       propertyPath: m_Name
       value: sniper_projectile

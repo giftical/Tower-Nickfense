@@ -49,14 +49,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85b7ed50f7a19854da6ac45402302663, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tower
-  attackSpeed: 0.7
+  attackSpeed: 0.4
   damage: 7
-  range: 8
+  range: 6
   enemyMask:
     serializedVersion: 2
     m_Bits: 8
   firePoint: {fileID: 6794232563794193861}
-  projectilePf: {fileID: 3890261034199139338, guid: 8d776fc3bc288b74fb9468b26c812657, type: 3}
+  projectilePrefab: {fileID: 8840180603189959136, guid: 8d776fc3bc288b74fb9468b26c812657, type: 3}
   muzzleModel: {fileID: 7867515011690247808}
   data: {fileID: 11400000, guid: a78131b6eb7c9174c85a6e8f29d412a2, type: 2}
   level: 1

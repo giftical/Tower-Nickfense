@@ -176,7 +176,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   firePoint: {fileID: 4271044047352895889}
-  projectilePf: {fileID: 2799353641748233152, guid: b9f5d1a727d11f148bbf27e067d2dc4d, type: 3}
+  projectilePrefab: {fileID: 8257191636748086712, guid: b9f5d1a727d11f148bbf27e067d2dc4d, type: 3}
   muzzleModel: {fileID: 299411350455560680}
   data: {fileID: 11400000, guid: d50497fe329a5a6468a0ef77066a22a1, type: 2}
   level: 1

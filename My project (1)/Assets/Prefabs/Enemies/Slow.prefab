@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6149551818045307868}
   - component: {fileID: 4795348309953779021}
   - component: {fileID: 7271296775953792766}
+  - component: {fileID: -2262131061463595093}
   m_Layer: 3
   m_Name: Slow
   m_TagString: Untagged
@@ -130,6 +131,7 @@ MonoBehaviour:
   maxHealth: 15
   currentHealth: 15
   goldOnDeath: 5
+  displayName: Enemy
 --- !u!114 &4795348309953779021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,3 +159,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c5778f35e8a5e543b81b80fe86c0d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDamageAdapter
+--- !u!114 &-2262131061463595093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7101285851342476666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e5a8027dfef0b8408b5ee970bc51da3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyStatusEffects

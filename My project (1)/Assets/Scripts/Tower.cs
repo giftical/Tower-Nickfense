@@ -1,4 +1,3 @@
-// Tower.cs (FULL) — includes public getters for UI, no registry.
 using UnityEngine;
 
 public class Tower : MonoBehaviour
@@ -11,7 +10,7 @@ public class Tower : MonoBehaviour
     [Header("Targeting")]
     [SerializeField] LayerMask enemyMask;
     [SerializeField] Transform firePoint;
-    [SerializeField] Projectile projectilePf;
+    [SerializeField] GameObject projectilePrefab;
 
     [Header("Muzzle Visual (optional)")]
     [SerializeField] Transform muzzleModel;
@@ -22,8 +21,6 @@ public class Tower : MonoBehaviour
 
     public TowerData Data => data;
     public int Level => level;
-
-    // UI-readonly runtime stats
     public float AttackSpeed => attackSpeed;
     public float Damage => damage;
     public float Range => range;
@@ -137,12 +134,20 @@ public class Tower : MonoBehaviour
             var prog = h.GetComponentInParent<IPathProgress>() ?? h.GetComponent<IPathProgress>();
             if (prog != null)
             {
-                if (prog.Progress01 > bestProg) { bestProg = prog.Progress01; best = dmg; }
+                if (prog.Progress01 > bestProg)
+                {
+                    bestProg = prog.Progress01;
+                    best = dmg;
+                }
             }
             else if (bestProg < 0f)
             {
                 float d2 = (dmg.GetTransform().position - transform.position).sqrMagnitude;
-                if (d2 < fallbackBestSqr) { fallbackBestSqr = d2; best = dmg; }
+                if (d2 < fallbackBestSqr)
+                {
+                    fallbackBestSqr = d2;
+                    best = dmg;
+                }
             }
         }
 
@@ -151,12 +156,21 @@ public class Tower : MonoBehaviour
 
     void Shoot(IDamageable target)
     {
-        if (!projectilePf || !firePoint) return;
+        if (!projectilePrefab || !firePoint) return;
 
         AimMuzzleOnShot(target);
 
-        var p = Instantiate(projectilePf, firePoint.position, firePoint.rotation);
-        p.Init(target, damage);
+        GameObject projectileObj = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+        ProjectileBase projectile = projectileObj.GetComponent<ProjectileBase>();
+
+        if (projectile == null)
+        {
+            Debug.LogError($"Projectile prefab '{projectilePrefab.name}' does not contain a ProjectileBase-derived component.", projectileObj);
+            Destroy(projectileObj);
+            return;
+        }
+
+        projectile.Init(target, damage);
     }
 
     void AimMuzzleOnShot(IDamageable target)

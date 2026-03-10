@@ -21,6 +21,6 @@ MonoBehaviour:
   traits:
   - {fileID: 11400000, guid: f4c4a3928589e1c45af956b2f1feab6e, type: 2}
   - {fileID: 11400000, guid: 419e78b79fecc2f4cbdc3e330e980dec, type: 2}
-  damageMultiplierPerLevel: 3
-  attackSpeedMultiplierPerLevel: 1.1
-  rangeMultiplierPerLevel: 2
+  damageMultiplierPerLevel: 1.5
+  attackSpeedMultiplierPerLevel: 1.05
+  rangeMultiplierPerLevel: 1.2

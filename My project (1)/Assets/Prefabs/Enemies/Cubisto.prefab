@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2935092195996623242}
   - component: {fileID: 1943307116412885973}
   - component: {fileID: -8365171113773396869}
+  - component: {fileID: -2209234341375398343}
   m_Layer: 3
   m_Name: Cubisto
   m_TagString: Untagged
@@ -130,6 +131,7 @@ MonoBehaviour:
   maxHealth: 10
   currentHealth: 10
   goldOnDeath: 3
+  displayName: Enemy
 --- !u!114 &1943307116412885973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,3 +159,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c5778f35e8a5e543b81b80fe86c0d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDamageAdapter
+--- !u!114 &-2209234341375398343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4152393395912580764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e5a8027dfef0b8408b5ee970bc51da3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyStatusEffects
