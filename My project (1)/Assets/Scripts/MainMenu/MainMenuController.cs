@@ -10,6 +10,10 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private GameObject settingsPanel;
     [SerializeField] private GameObject encyclopediaPanel;
 
+    [Header("Encyclopedia Sections")]
+    [SerializeField] private GameObject towersPanel;
+    [SerializeField] private GameObject enemiesPanel;
+
     [Header("Gameplay Scene")]
     [SerializeField] private string gameplaySceneName = "Game";
 
@@ -22,13 +26,13 @@ public class MainMenuController : MonoBehaviour
     {
         if (mainPanel) mainPanel.SetActive(true);
         CloseAllPopups();
+        CloseEncyclopediaSections();
     }
 
     private void OnEnable()
     {
         if (volumeSlider != null)
         {
-            // Load saved value when menu opens
             float saved = PlayerPrefs.GetFloat(PrefMusicVol, 1f);
             volumeSlider.SetValueWithoutNotify(saved);
             volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
@@ -55,27 +59,60 @@ public class MainMenuController : MonoBehaviour
         if (encyclopediaPanel) encyclopediaPanel.SetActive(false);
     }
 
+    private void CloseEncyclopediaSections()
+    {
+        if (towersPanel) towersPanel.SetActive(false);
+        if (enemiesPanel) enemiesPanel.SetActive(false);
+    }
+
     public void OnPlayPressed()
     {
         CloseAllPopups();
+        CloseEncyclopediaSections();
+
         if (difficultyPanel) difficultyPanel.SetActive(true);
     }
 
     public void OnSettingsPressed()
     {
         CloseAllPopups();
+        CloseEncyclopediaSections();
+
         if (settingsPanel) settingsPanel.SetActive(true);
     }
 
     public void OnEncyclopediaPressed()
     {
         CloseAllPopups();
+        CloseEncyclopediaSections();
+
         if (encyclopediaPanel) encyclopediaPanel.SetActive(true);
+    }
+
+    public void OnOpenTowersPressed()
+    {
+        if (towersPanel) towersPanel.SetActive(true);
+    }
+
+    public void OnCloseTowersPressed()
+    {
+        if (towersPanel) towersPanel.SetActive(false);
+    }
+
+    public void OnOpenEnemiesPressed()
+    {
+        if (enemiesPanel) enemiesPanel.SetActive(true);
+    }
+
+    public void OnCloseEnemiesPressed()
+    {
+        if (enemiesPanel) enemiesPanel.SetActive(false);
     }
 
     public void OnClosePopupPressed()
     {
         CloseAllPopups();
+        CloseEncyclopediaSections();
     }
 
     public void OnEasyPressed() => StartGame();
