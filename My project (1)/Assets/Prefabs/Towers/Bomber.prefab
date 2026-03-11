@@ -9,7 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3470993869846577726}
-  m_Layer: 0
+  - component: {fileID: 9102068161166476875}
+  - component: {fileID: 992978458759023396}
+  - component: {fileID: 6450125761021361297}
+  - component: {fileID: 2708668956528473325}
+  m_Layer: 7
   m_Name: Bomber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30,7 +34,108 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9200207726514674583}
+  - {fileID: 7014105178914045220}
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9102068161166476875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4826038767634340736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85b7ed50f7a19854da6ac45402302663, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Tower
+  attackSpeed: 0.5
+  damage: 5
+  range: 3
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 8
+  firePoint: {fileID: 7014105178914045220}
+  projectilePrefab: {fileID: 4560029357520569106, guid: c024d8f0a6411f549b488e9af5ad989e, type: 3}
+  muzzleModel: {fileID: 3470993869846577726}
+  data: {fileID: 11400000, guid: 034b0bb49acf23c459ea1dc73925ec95, type: 2}
+  level: 1
+--- !u!114 &992978458759023396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4826038767634340736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 418c5fcd38057e24780932db55aa7781, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerHighlighter
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+--- !u!114 &6450125761021361297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4826038767634340736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4643489e6c3213d4fa7f7cca5a4da796, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerSynergyAgent
+--- !u!65 &2708668956528473325
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4826038767634340736}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1.6880604, z: 1}
+  m_Center: {x: 0, y: 0.3440302, z: 0}
+--- !u!1 &6546314158103343988
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7014105178914045220}
+  m_Layer: 7
+  m_Name: muzzle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7014105178914045220
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6546314158103343988}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.111, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3470993869846577726}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6625125171981794075
 GameObject:
@@ -43,7 +148,7 @@ GameObject:
   - component: {fileID: 9200207726514674583}
   - component: {fileID: 7274511469558370245}
   - component: {fileID: 3140926620323941464}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: bomberModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}

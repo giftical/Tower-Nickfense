@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f91dd729b19c9bb4cbb9b461506600fd, type: 3}
+  m_Name: BomberTower
+  m_EditorClassIdentifier: Assembly-CSharp::TowerData
+  prefab: {fileID: 4826038767634340736, guid: d8530064931863d4a8fd77bd5516d486, type: 3}
+  footprintRadius: 0.5
+  displayName: Bomber
+  icon: {fileID: 21300000, guid: c87ad9eaa6820434899a8f9b901cd2d9, type: 3}
+  cost: 50
+  typeId: bomber
+  traits:
+  - {fileID: 11400000, guid: 6f7efac25a34806459c353673affe899, type: 2}
+  - {fileID: 11400000, guid: 419e78b79fecc2f4cbdc3e330e980dec, type: 2}
+  damageMultiplierPerLevel: 2
+  attackSpeedMultiplierPerLevel: 1
+  rangeMultiplierPerLevel: 1
