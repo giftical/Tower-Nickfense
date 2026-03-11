@@ -23,4 +23,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b6a6ef6b217292844ad0117a0b7d37aa, type: 2}
   damageMultiplierPerLevel: 1.2
   attackSpeedMultiplierPerLevel: 1.1
-  rangeMultiplierPerLevel: 1.1
+  rangeMultiplierPerLevel: 1

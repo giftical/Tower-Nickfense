@@ -8,6 +8,9 @@ public class WaypointFollower : MonoBehaviour, IPathProgress
     [SerializeField] float turnSpeed = 1000f;
     [SerializeField] float reachThreshold = 0.05f;
 
+    [Header("Rotation Offset")]
+    [SerializeField] Vector3 rotationOffsetEuler = Vector3.zero;
+
     readonly List<Transform> waypoints = new();
     readonly List<float> segLen = new();
     readonly List<float> prefix = new();
@@ -20,18 +23,30 @@ public class WaypointFollower : MonoBehaviour, IPathProgress
     {
         pathRoot = path;
         BuildWaypointList();
+
+        if (waypoints.Count == 0)
+            return;
+
         transform.position = waypoints[0].position;
         index = 1;
+
+        FaceNextWaypointInstant();
     }
 
     void Awake()
     {
         stats = GetComponent<EnemyStats>();
+
         if (pathRoot != null)
         {
             BuildWaypointList();
-            transform.position = waypoints[0].position;
-            index = 1;
+
+            if (waypoints.Count > 0)
+            {
+                transform.position = waypoints[0].position;
+                index = 1;
+                FaceNextWaypointInstant();
+            }
         }
     }
 
@@ -46,10 +61,45 @@ public class WaypointFollower : MonoBehaviour, IPathProgress
         transform.position = Vector3.MoveTowards(transform.position, target, step);
 
         if (dir.sqrMagnitude > 0.0001f)
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), turnSpeed * Time.deltaTime);
+        {
+            Quaternion targetRotation =
+                Quaternion.LookRotation(dir.normalized) *
+                Quaternion.Euler(rotationOffsetEuler);
 
-        if ((transform.position - target).sqrMagnitude <= reachThreshold * reachThreshold) index++;
-        if (index >= waypoints.Count) Destroy(gameObject);
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRotation,
+                turnSpeed * Time.deltaTime
+            );
+        }
+
+        if ((transform.position - target).sqrMagnitude <= reachThreshold * reachThreshold)
+            index++;
+
+        if (index >= waypoints.Count)
+            ReachGoal();
+    }
+
+    void ReachGoal()
+    {
+        if (PlayerHealth.I != null && stats != null)
+            PlayerHealth.I.TakeDamage(stats.currentHealth);
+
+        Destroy(gameObject);
+    }
+
+    void FaceNextWaypointInstant()
+    {
+        if (waypoints.Count < 2 || index >= waypoints.Count)
+            return;
+
+        Vector3 dir = waypoints[index].position - transform.position;
+        if (dir.sqrMagnitude <= 0.0001f)
+            return;
+
+        transform.rotation =
+            Quaternion.LookRotation(dir.normalized) *
+            Quaternion.Euler(rotationOffsetEuler);
     }
 
     void BuildWaypointList()

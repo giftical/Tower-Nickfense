@@ -19,6 +19,7 @@ public class EnemyStats : MonoBehaviour
     float moveSpeedMultiplier = 1f;
 
     public float CurrentMoveSpeed => moveSpeed * moveSpeedMultiplier;
+    public int CurrentHealth => currentHealth;
 
     void Awake()
     {

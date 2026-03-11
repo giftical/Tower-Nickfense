@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+using TMPro;
 
 public class ShopManager : MonoBehaviour
 {
@@ -9,6 +11,15 @@ public class ShopManager : MonoBehaviour
 
     [Header("Slots in UI (size 4)")]
     [SerializeField] ShopSlotUI[] slots;
+
+    [Header("Auto Refresh")]
+    [SerializeField] float refreshInterval = 10f;
+
+    [Header("UI")]
+    [SerializeField] TMP_Text refreshTimerText;
+
+    float timer;
+    Coroutine refreshRoutine;
 
     void Awake()
     {
@@ -23,6 +34,27 @@ public class ShopManager : MonoBehaviour
     void Start()
     {
         RollShop();
+        timer = refreshInterval;
+        refreshRoutine = StartCoroutine(ShopRefreshLoop());
+    }
+
+    void Update()
+    {
+        if (timer > 0f)
+            timer -= Time.deltaTime;
+
+        if (refreshTimerText != null)
+            refreshTimerText.text = Mathf.Ceil(timer).ToString();
+    }
+
+    IEnumerator ShopRefreshLoop()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(refreshInterval);
+            RollShop();
+            timer = refreshInterval;
+        }
     }
 
     public void RollShop()

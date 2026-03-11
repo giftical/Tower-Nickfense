@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85b7ed50f7a19854da6ac45402302663, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tower
-  attackSpeed: 0.5
+  attackSpeed: 0.2
   damage: 5
   range: 3
   enemyMask:
