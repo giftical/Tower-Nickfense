@@ -1,126 +1,63 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class MainMenuController : MonoBehaviour
 {
     [Header("Panels")]
-    [SerializeField] private GameObject mainPanel;
-    [SerializeField] private GameObject difficultyPanel;
-    [SerializeField] private GameObject settingsPanel;
-    [SerializeField] private GameObject encyclopediaPanel;
-
-    [Header("Encyclopedia Sections")]
-    [SerializeField] private GameObject towersPanel;
-    [SerializeField] private GameObject enemiesPanel;
+    [SerializeField] private GameObject mainPanel;         // stays visible
+    [SerializeField] private GameObject playPanel;         // overlay popup
+    [SerializeField] private GameObject settingsPanel;     // overlay popup
+    [SerializeField] private GameObject encyclopediaPanel; // overlay popup
 
     [Header("Gameplay Scene")]
-    [SerializeField] private string gameplaySceneName = "Game";
-
-    [Header("Audio Settings")]
-    [SerializeField] private Slider volumeSlider;
-
-    private const string PrefMusicVol = "music_volume";
+    [SerializeField] private string gameplaySceneName = "GameScene";
 
     private void Start()
     {
         if (mainPanel) mainPanel.SetActive(true);
         CloseAllPopups();
-        CloseEncyclopediaSections();
-    }
-
-    private void OnEnable()
-    {
-        if (volumeSlider != null)
-        {
-            float saved = PlayerPrefs.GetFloat(PrefMusicVol, 1f);
-            volumeSlider.SetValueWithoutNotify(saved);
-            volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (volumeSlider != null)
-            volumeSlider.onValueChanged.RemoveListener(OnVolumeChanged);
-    }
-
-    private void OnVolumeChanged(float value)
-    {
-        value = Mathf.Clamp01(value);
-        PlayerPrefs.SetFloat(PrefMusicVol, value);
-        PlayerPrefs.Save();
     }
 
     private void CloseAllPopups()
     {
-        if (difficultyPanel) difficultyPanel.SetActive(false);
+        if (playPanel) playPanel.SetActive(false);
         if (settingsPanel) settingsPanel.SetActive(false);
         if (encyclopediaPanel) encyclopediaPanel.SetActive(false);
     }
 
-    private void CloseEncyclopediaSections()
-    {
-        if (towersPanel) towersPanel.SetActive(false);
-        if (enemiesPanel) enemiesPanel.SetActive(false);
-    }
-
+    // Main buttons
     public void OnPlayPressed()
     {
         CloseAllPopups();
-        CloseEncyclopediaSections();
-
-        if (difficultyPanel) difficultyPanel.SetActive(true);
+        if (playPanel) playPanel.SetActive(true);
     }
 
     public void OnSettingsPressed()
     {
         CloseAllPopups();
-        CloseEncyclopediaSections();
-
         if (settingsPanel) settingsPanel.SetActive(true);
     }
 
     public void OnEncyclopediaPressed()
     {
         CloseAllPopups();
-        CloseEncyclopediaSections();
-
         if (encyclopediaPanel) encyclopediaPanel.SetActive(true);
     }
 
-    public void OnOpenTowersPressed()
+    // Play panel button
+    public void OnStartGamePressed()
     {
-        if (towersPanel) towersPanel.SetActive(true);
+        SceneManager.LoadScene(gameplaySceneName);
     }
 
-    public void OnCloseTowersPressed()
-    {
-        if (towersPanel) towersPanel.SetActive(false);
-    }
-
-    public void OnOpenEnemiesPressed()
-    {
-        if (enemiesPanel) enemiesPanel.SetActive(true);
-    }
-
-    public void OnCloseEnemiesPressed()
-    {
-        if (enemiesPanel) enemiesPanel.SetActive(false);
-    }
-
+    // Generic close button for popups
     public void OnClosePopupPressed()
     {
         CloseAllPopups();
-        CloseEncyclopediaSections();
     }
 
-    public void OnEasyPressed() => StartGame();
-    public void OnNormalPressed() => StartGame();
-    public void OnHardPressed() => StartGame();
-
-    private void StartGame()
+    public void OnQuitPressed()
     {
-        SceneManager.LoadScene(gameplaySceneName);
+        Application.Quit();
     }
 }

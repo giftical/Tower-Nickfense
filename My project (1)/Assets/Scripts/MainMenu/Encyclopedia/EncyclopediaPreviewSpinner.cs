@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class EncyclopediaPreviewSpinner : MonoBehaviour
+public class PreviewModelSpinner : MonoBehaviour
 {
-    [SerializeField] private float rotationSpeed = 35f;
+    [SerializeField] private float rotationSpeed = 30f;
 
-    private void Update()
+    void Update()
     {
-        transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.World);
+        transform.Rotate(0f, rotationSpeed * Time.deltaTime, 0f, Space.World);
     }
 }
