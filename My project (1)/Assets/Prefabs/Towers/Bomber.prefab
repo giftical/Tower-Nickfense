@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tower
   attackSpeed: 0.2
-  damage: 5
+  damage: 3
   range: 3
   enemyMask:
     serializedVersion: 2

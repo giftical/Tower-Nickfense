@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TraitData
   displayName: Siege
   requiredUniqueTypes: 2
-  attackSpeedBonus: 2
-  damageBonus: 0
+  attackSpeedBonus: 0
+  damageBonus: 1.25
   rangeBonus: 0

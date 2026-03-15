@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TraitData
   displayName: Unique
   requiredUniqueTypes: 2
-  attackSpeedBonus: 1.2
-  damageBonus: 1.2
-  rangeBonus: 1.2
+  attackSpeedBonus: 0.7
+  damageBonus: 0.7
+  rangeBonus: 0.7
