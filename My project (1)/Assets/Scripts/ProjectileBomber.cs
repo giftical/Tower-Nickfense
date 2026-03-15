@@ -88,8 +88,7 @@ public class BomberProjectile : ProjectileBase
 
         if (target == null || target.IsDead)
         {
-            transform.position += moveDir * speed * Time.deltaTime;
-            UpdateVisualRotation();
+            Destroy(gameObject);
             return;
         }
 

@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf562fcc76d01f4458555a3d29b2ac9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BomberProjectile
-  speed: 7
+  speed: 10
   maxLifetime: 2
   launchUpwardBias: 0.1
   launchForwardBias: 10

@@ -54,8 +54,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStats
   moveSpeed: 0.5
-  maxHealth: 1000
-  currentHealth: 1000
+  maxHealth: 5000
+  currentHealth: 5000
   goldOnDeath: 0
   displayName: The King
 --- !u!114 &-9195821005398093545

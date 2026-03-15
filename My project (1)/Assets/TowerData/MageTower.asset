@@ -15,7 +15,7 @@ MonoBehaviour:
   prefab: {fileID: 8319070920305322548, guid: 254c3fc12942b6544b72fe3e28b86b72, type: 3}
   footprintRadius: 0.5
   displayName: Mage
-  icon: {fileID: 21300000, guid: bf0e6a473757bca4ea1e151d5ed1bedd, type: 3}
+  icon: {fileID: 21300000, guid: 12594e8341561cb40add487d6406a050, type: 3}
   cost: 35
   typeId: mage
   traits:

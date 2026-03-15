@@ -15,8 +15,8 @@ MonoBehaviour:
   prefab: {fileID: 4826038767634340736, guid: d8530064931863d4a8fd77bd5516d486, type: 3}
   footprintRadius: 0.5
   displayName: Bomber
-  icon: {fileID: 21300000, guid: c87ad9eaa6820434899a8f9b901cd2d9, type: 3}
-  cost: 50
+  icon: {fileID: 21300000, guid: ddd4cfd337715834696d0ece4fc77b3c, type: 3}
+  cost: 100
   typeId: bomber
   traits:
   - {fileID: 11400000, guid: 6f7efac25a34806459c353673affe899, type: 2}
